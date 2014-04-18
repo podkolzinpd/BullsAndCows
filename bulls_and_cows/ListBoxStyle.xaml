@@ -1,0 +1,218 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:bulls_and_cows="clr-namespace:bulls_and_cows"
+                    xmlns:my="clr-namespace:bulls_and_cows">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="IconDictionary.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <my:ConverterColorBull x:Key="ConvColorBull"/>
+    <my:ConverterColorCow x:Key="ConvColorCow"/>
+    <my:ConverterCountBull x:Key="ConvStatBull"/>
+    <my:ConverterCountCow x:Key="ConvStatCow"/>
+    <my:ConverterFont x:Key="ConvFont"/>
+    <my:ConverterText x:Key="ConvText"/>
+    <my:ConverterToolTipBull x:Key="ConvToolTipBull"/>
+    <my:ConverterToolTipCow x:Key="ConvToolTipCow"/>
+    <my:ConverterVisibilityImageBull x:Key="ConvVisibImageBull"/>
+    <my:ConverterVisibilityImageCow x:Key="ConvVisibImageCow"/>
+    <my:ConverterVisibilitySeparator x:Key="ConvVisibSep"/>
+    
+    <!--Стиль вывода статистики-->
+    <Style TargetType="ListBoxItem" x:Key="Statistics">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                     <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="tbCurrentNumber" FontSize="20" VerticalAlignment="Center"
+                                   Text="{Binding Res, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            <TextBlock.FontStyle>
+                                <MultiBinding Converter="{StaticResource ConvText}">
+                                    <Binding Path="Bull"/>
+                                    <Binding Path="Cow"/>
+                                </MultiBinding>
+                            </TextBlock.FontStyle>
+                            <TextBlock.FontWeight>
+                                <MultiBinding Converter="{StaticResource ConvText}">
+                                    <Binding Path="Bull"/>
+                                    <Binding Path="Cow"/>
+                                </MultiBinding>
+                            </TextBlock.FontWeight>
+                            <TextBlock.TextDecorations>
+                                <MultiBinding Converter="{StaticResource ConvText}">
+                                    <Binding Path="Bull"/>
+                                    <Binding Path="Cow"/>
+                                </MultiBinding>
+                            </TextBlock.TextDecorations>
+                        </TextBlock>
+
+                        <Image x:Name="Fence1" Source="{StaticResource FenceIcon}" MaxHeight="30"/>
+
+                        <Image x:Name="imBull" Source="{StaticResource BullIcon}" MaxHeight="50"
+                               ToolTip="{Binding Bull, Converter={StaticResource ConvToolTipBull}, Mode=TwoWay}"
+                               Visibility="{Binding Bull, Converter={StaticResource ConvVisibImageBull}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        </Image>
+
+                        <TextBlock x:Name="tbCountBull" VerticalAlignment="Center"
+                                   Text="{Binding Bull, Converter={StaticResource ConvStatBull}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   Foreground="{Binding Bull, Converter={StaticResource ConvColorBull}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            <TextBlock.FontSize>
+                                <MultiBinding Converter="{StaticResource ConvFont}">
+                                    <Binding Path="Bull"/>
+                                    <Binding Path="Cow"/>
+                                </MultiBinding>
+                            </TextBlock.FontSize>
+                        </TextBlock>
+
+                        <Image x:Name="Fence2" Grid.Column="4" Source="{StaticResource FenceIcon}" MaxHeight="30">
+                            <Image.Visibility>
+                                <MultiBinding Converter="{StaticResource ConvVisibSep}">
+                                    <Binding Path="Bull"/>
+                                    <Binding Path="Cow"/>
+                                </MultiBinding>
+                            </Image.Visibility>
+                        </Image>
+
+                        <Image x:Name="imCow" Source="{StaticResource CowIcon}" MaxHeight="50"
+                               ToolTip="{Binding Cow, Converter={StaticResource ConvToolTipCow}, Mode=TwoWay}" 
+                               Visibility="{Binding Cow, Converter={StaticResource ConvVisibImageCow}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        </Image>
+
+                        <TextBlock x:Name="tbCountCow" VerticalAlignment="Center"
+                                   Text="{Binding Cow, Converter={StaticResource ConvStatCow}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   Foreground="{Binding Cow, Converter={StaticResource ConvColorCow}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            <TextBlock.FontSize>
+                                <MultiBinding Converter="{StaticResource ConvFont}">
+                                    <Binding Path="Cow"/>
+                                    <Binding Path="Bull"/>
+                                </MultiBinding>
+                            </TextBlock.FontSize>
+                        </TextBlock>
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding TarType}" Value="{x:Static bulls_and_cows:TargetType.BullFour}">
+                            <Setter TargetName="tbCurrentNumber" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Fence1" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="tbCountBull" Property="Grid.Column" Value="2"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding TarType}" Value="{x:Static bulls_and_cows:TargetType.BullMore}">
+                            <Setter TargetName="tbCurrentNumber" Property="Grid.Column" Value="3"/>
+                            <Setter TargetName="Fence1" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="imBull" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="tbCountBull" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Fence2" Property="Grid.Column" Value="4"/>
+                            <Setter TargetName="imCow" Property="Grid.Column" Value="5"/>
+                            <Setter TargetName="tbCountCow" Property="Grid.Column" Value="6"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding TarType}" Value="{x:Static bulls_and_cows:TargetType.CowMore}">
+                            <Setter TargetName="tbCurrentNumber" Property="Grid.Column" Value="3"/>
+                            <Setter TargetName="Fence1" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="imBull" Property="Grid.Column" Value="5"/>
+                            <Setter TargetName="tbCountBull" Property="Grid.Column" Value="6"/>
+                            <Setter TargetName="Fence2" Property="Grid.Column" Value="4"/>
+                            <Setter TargetName="imCow" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="tbCountCow" Property="Grid.Column" Value="1"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding TarType}" Value="{x:Static bulls_and_cows:TargetType.Equality}">
+                            <Setter TargetName="tbCurrentNumber" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Fence1" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="imBull" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="tbCountBull" Property="Grid.Column" Value="3"/>
+                            <Setter TargetName="Fence2" Property="Grid.Column" Value="4"/>
+                            <Setter TargetName="imCow" Property="Grid.Column" Value="5"/>
+                            <Setter TargetName="tbCountCow" Property="Grid.Column" Value="6"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding TarType}" Value="{x:Static bulls_and_cows:TargetType.BullNull}">
+                            <Setter TargetName="tbCurrentNumber" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Fence1" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="imCow" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="tbCountCow" Property="Grid.Column" Value="3"/>
+                        </DataTrigger>
+                        
+                        <DataTrigger Binding="{Binding TarType}" Value="{x:Static bulls_and_cows:TargetType.CowNull}">
+                            <Setter TargetName="tbCurrentNumber" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Fence1" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="imBull" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="tbCountBull" Property="Grid.Column" Value="3"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+    
+    <!--Стиль ListBox в котором выводится статистика-->
+    <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
+    	<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+    	<Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+    	<Setter Property="BorderThickness" Value="1"/>
+    	<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    	<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    	<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    	<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+    	<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+    	<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+    	<Setter Property="VerticalContentAlignment" Value="Center"/>
+    	<Setter Property="Template">
+    		<Setter.Value>
+    			<ControlTemplate TargetType="{x:Type ListBox}">
+    				<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="1" SnapsToDevicePixels="true">
+    					<DockPanel>
+                            <TextBlock DockPanel.Dock="Bottom" HorizontalAlignment="Center"
+                                       Text="{Binding Progress, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type my:MainWindow}}}"/>
+                            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center"
+                                       Text="{Binding Progress, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type my:MainWindow}}}"/>
+                            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center"
+                                       Text="{Binding Progress, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type my:MainWindow}}}">
+                            	<TextBlock.LayoutTransform>
+                            		<TransformGroup>
+                            			<ScaleTransform/>
+                            			<SkewTransform/>
+                            			<RotateTransform Angle="-90"/>
+                            			<TranslateTransform/>
+                            		</TransformGroup>
+                            	</TextBlock.LayoutTransform>
+                            </TextBlock>
+                            <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
+                                       Text="{Binding Progress, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type my:MainWindow}}}">
+                            	<TextBlock.LayoutTransform>
+                            		<TransformGroup>
+                            			<ScaleTransform/>
+                            			<SkewTransform/>
+                            			<RotateTransform Angle="90"/>
+                            			<TranslateTransform/>
+                            		</TransformGroup>
+                            	</TextBlock.LayoutTransform>
+							</TextBlock>
+							<ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
+    							<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+    						</ScrollViewer>
+						</DockPanel>
+    				</Border>
+    				<ControlTemplate.Triggers>
+    					<Trigger Property="IsEnabled" Value="false">
+    						<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+    					</Trigger>
+    					<Trigger Property="IsGrouping" Value="true">
+    						<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+    					</Trigger>
+    				</ControlTemplate.Triggers>
+    			</ControlTemplate>
+    		</Setter.Value>
+    	</Setter>
+    </Style>
+</ResourceDictionary>

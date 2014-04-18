@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="BullIcon" UriSource="Images/bull.ico"/>
+    <BitmapImage x:Key="CowIcon" UriSource="Images/cow.ico"/>
+    <BitmapImage x:Key="FenceIcon" UriSource="Images/fence.ico"/>
+</ResourceDictionary>
